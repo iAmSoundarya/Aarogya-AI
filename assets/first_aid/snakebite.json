@@ -1,0 +1,35 @@
+{
+  "type": "snakebite",
+  "title": "Snake Bite — सांप का काटना",
+  "warning": "Call 108 immediately. Most snake bites are medical emergencies.",
+  "steps": [
+    {
+      "instruction": "Move the person away from the snake. Do NOT try to catch or kill the snake.",
+      "hint": "Note the snake's color/pattern if safe — helps doctors identify antivenom"
+    },
+    {
+      "instruction": "Keep the person calm and still. Movement speeds up venom spreading through the body.",
+      "hint": "Reassure them — panic increases heart rate and venom spread"
+    },
+    {
+      "instruction": "Remove tight clothing, watches, rings, or anything near the bite site.",
+      "hint": "Swelling can occur quickly — tight items can cut off circulation"
+    },
+    {
+      "instruction": "Keep the bitten limb BELOW heart level. If arm, keep it down. If leg, keep person lying flat.",
+      "hint": "This slows venom movement toward the heart"
+    },
+    {
+      "instruction": "DO NOT: cut the wound, suck out venom, apply tourniquet, apply ice, or give alcohol.",
+      "hint": "These methods are dangerous and make things worse"
+    },
+    {
+      "instruction": "Cover the bite loosely with a clean bandage if available. Do not wrap tightly.",
+      "hint": null
+    },
+    {
+      "instruction": "Rush to the nearest hospital immediately. Call 108 for ambulance.",
+      "hint": "Antivenom is only available at hospitals — time is critical"
+    }
+  ]
+}

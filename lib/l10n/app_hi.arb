@@ -1,0 +1,20 @@
+{
+  "@@locale": "hi",
+  "appName": "आरोग्य AI",
+  "symptomHint": "अपने लक्षण बताएं...",
+  "voiceHint": "बोलने के लिए माइक दबाएं",
+  "emergency": "आपातकाल",
+  "medicines": "दवाइयाँ",
+  "settings": "सेटिंग्स",
+  "home": "होम",
+  "urgencyLow": "कम जरूरी",
+  "urgencyMedium": "मध्यम जरूरी",
+  "urgencyHigh": "जल्द डॉक्टर से मिलें",
+  "urgencyCritical": "आपातकाल — तुरंत अस्पताल जाएं",
+  "addMedicine": "दवाई जोड़ें",
+  "medicineName": "दवाई का नाम",
+  "dosage": "खुराक",
+  "saveReminder": "याद दिलाओ सेट करें",
+  "noMedicines": "कोई दवाई नहीं जोड़ी गई",
+  "offlineBadge": "ऑफलाइन"
+}

@@ -1,0 +1,5 @@
+-keep class com.aarogya.ai.LlamaBridge { *; }
+-keep class com.aarogya.ai.WhisperBridge { *; }
+-keepclasseswithmembernames class * { native <methods>; }
+-keep class io.flutter.** { *; }
+-keep class androidx.work.** { *; }

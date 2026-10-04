@@ -1,0 +1,20 @@
+{
+  "@@locale": "en",
+  "appName": "AarogyaAI",
+  "symptomHint": "Describe your symptoms...",
+  "voiceHint": "Tap mic to speak",
+  "emergency": "Emergency",
+  "medicines": "Medicines",
+  "settings": "Settings",
+  "home": "Home",
+  "urgencyLow": "Low urgency",
+  "urgencyMedium": "Medium urgency",
+  "urgencyHigh": "High urgency",
+  "urgencyCritical": "CRITICAL — seek emergency care",
+  "addMedicine": "Add Medicine",
+  "medicineName": "Medicine name",
+  "dosage": "Dosage",
+  "saveReminder": "Save & Set Reminder",
+  "noMedicines": "No medicines added yet",
+  "offlineBadge": "Offline"
+}
