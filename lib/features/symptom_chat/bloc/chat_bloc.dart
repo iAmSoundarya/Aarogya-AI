@@ -148,8 +148,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   String _currentSessionId = '';
   final StringBuffer _streamBuffer = StringBuffer();
 
-  /// Reads the currently selected language from settings.
-  /// Returns 'en' or 'hi'. Defaults to 'hi' if not set.
   String get _langCode {
     final code = _prefs.getString('selected_language') ?? 'hi';
     return code == 'en' ? 'en' : 'hi';
@@ -169,7 +167,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ) async {
     final current = state as ChatLoaded;
 
-    // Add user message to UI immediately
     final userMsg = ChatMessage.user(
       id: _uuid.v4(),
       sessionId: _currentSessionId,
@@ -188,7 +185,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     _streamBuffer.clear();
 
-    // Stream tokens from the model
     try {
       final stream = _repo.generateResponse(
         sessionId: _currentSessionId,
@@ -210,7 +206,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         },
       );
 
-      // Parse urgency from completed response
       final fullResponse = _streamBuffer.toString();
       final urgency = _parseUrgencyFromResponse(fullResponse);
       add(ChatResponseCompleted(
@@ -242,7 +237,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ChatVoiceRecordStopped event,
       Emitter<ChatState> emit,
       ) async {
-    // Phase 1: stop the recorder and show "Transcribing…"
+    // Phase 1: stop recording
     final beforeStop = state as ChatLoaded;
     final audioPath = await _audio.stopRecording();
     emit(beforeStop.copyWith(
@@ -252,16 +247,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     ));
 
     if (audioPath == null) {
-      // Re-read state after await — never reuse `beforeStop`
       emit((state as ChatLoaded).copyWith(isTranscribing: false));
       return;
     }
 
+    // Phase 2: transcribe
     final text = await _audio.transcribeLastRecording(
       languageCode: _langCode,
     );
 
-    // Re-read state after await again
+    print('>>> BLoC: transcribe returned: "$text"');
+    print('>>> BLoC: emit.isDone = ${emit.isDone}');
+
+    if (emit.isDone) {
+      print('>>> BLoC: emitter is DONE — state will not update');
+      return;
+    }
+
     final after = state as ChatLoaded;
 
     if (text == null || text.isEmpty) {
@@ -272,7 +274,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       return;
     }
 
-    // Put the transcript in the input field so the user can edit before sending
+    print('>>> BLoC: emitting inputText="$text"');
     emit(after.copyWith(
       isTranscribing: false,
       inputText: text,
@@ -283,9 +285,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> _onTokenReceived(
       ChatTokenReceived event,
       Emitter<ChatState> emit,
-      ) async {
-    // Handled inline in _onMessageSent via emit.forEach
-  }
+      ) async {}
 
   Future<void> _onResponseCompleted(
       ChatResponseCompleted event,
@@ -304,7 +304,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     );
     await _repo.saveMessage(assistantMsg);
 
-    // Speak the response aloud
     await _tts.speak(cleanedResponse);
 
     emit(current.copyWith(
@@ -331,8 +330,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   // ─── Helpers ────────────────────────────────────────────────────────────
 
-  /// Parses urgency level from model output.
-  /// The clinical prompt instructs the model to include [URGENCY:N] in output.
   int? _parseUrgencyFromResponse(String response) {
     final match = RegExp(r'\[URGENCY:(\d)\]').firstMatch(response);
     if (match != null) {
@@ -342,8 +339,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   String _extractReasoning(String response) {
-    final match = RegExp(r'\[REASONING:(.*?)\]', dotAll: true)
-        .firstMatch(response);
+    final match =
+    RegExp(r'\[REASONING:(.*?)\]', dotAll: true).firstMatch(response);
     return match?.group(1)?.trim() ?? '';
   }
 

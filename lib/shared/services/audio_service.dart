@@ -14,24 +14,28 @@ class AudioService {
   // ─── Recording ──────────────────────────────────────────────────────────
 
   Future<void> startRecording() async {
+    print('>>> [AudioService] startRecording called');
     try {
+      print('>>> [AudioService] Requesting permission...');
       final hasPermission = await _recorder.hasPermission();
+      print('>>> [AudioService] hasPermission: $hasPermission');
       if (!hasPermission) throw Exception('Microphone permission denied');
 
       final dir = await getTemporaryDirectory();
       _currentPath = '${dir.path}/aarogya_recording.wav';
+      print('>>> [AudioService] Path: $_currentPath');
 
       await _recorder.start(
         const RecordConfig(
           encoder: AudioEncoder.wav,
-          sampleRate: 16000, // Whisper expects 16kHz
-          numChannels: 1,    // Mono
+          sampleRate: 16000,
+          numChannels: 1,
         ),
         path: _currentPath!,
       );
-      _log.d('Recording started: $_currentPath');
+      print('>>> [AudioService] Recording started');
     } catch (e) {
-      _log.e('Start recording failed: $e');
+      print('>>> [AudioService] ERROR: $e');
       rethrow;
     }
   }
@@ -65,7 +69,7 @@ class AudioService {
       _log.i('Transcribing $_currentPath with lang=$languageCode');
 
       final result = await _whisper.transcribe(
-        model: WhisperModel.base, // ~142 MB, good Hindi accuracy
+        model: WhisperModel.base,
         audioPath: _currentPath!,
         lang: languageCode,        // 'hi' or 'en'
         onProgress: onProgress,

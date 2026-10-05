@@ -294,8 +294,9 @@ class _SplashScreenState extends State<SplashScreen>
                   opacity: _pillsFade,
                   child: Wrap(
                     spacing: 10,
-                    runSpacing: 8,
+                    runSpacing: 10,                             // ← more space between rows
                     alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center, // ← center each pill vertically
                     children: const [
                       _FeaturePill('🌐 Offline'),
                       _FeaturePill('🗣️ Multilingual'),
@@ -364,21 +365,24 @@ class _FeaturePill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.10),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.20)),
-        ),
-        child: Text(
-          label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12.5,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      );
+    height: 34,                              // ← fixed height
+    padding: const EdgeInsets.symmetric(horizontal: 14),
+    alignment: Alignment.center,             // ← center text vertically
+    decoration: BoxDecoration(
+      color: Colors.white.withOpacity(0.10),
+      borderRadius: BorderRadius.circular(17),
+      border: Border.all(color: Colors.white.withOpacity(0.20)),
+    ),
+    child: Text(
+      label,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 12.5,
+        fontWeight: FontWeight.w500,
+        height: 1.0,                          // ← stop line-height inflation
+      ),
+    ),
+  );
 }
 
 // Particle painter for background visual

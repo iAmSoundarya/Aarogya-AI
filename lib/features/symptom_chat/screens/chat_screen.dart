@@ -80,7 +80,19 @@ class _ChatScreenState extends State<ChatScreen> {
       body: BlocConsumer<ChatBloc, ChatState>(
         listener: (context, state) {
           if (state is ChatLoaded) {
+            print('>>> LISTENER: inputText="${state.inputText}" '
+                'field="${_textController.text}" '
+                'isRecording=${state.isRecording} isTranscribing=${state.isTranscribing}');
             _scrollToBottom();
+
+            // Sync voice transcript (or any programmatic input) into the text field
+            if (state.inputText.isNotEmpty &&
+                state.inputText != _textController.text) {
+              _textController.text = state.inputText;
+              _textController.selection = TextSelection.fromPosition(
+                TextPosition(offset: _textController.text.length),
+              );
+            }
           }
         },
         builder: (context, state) {
